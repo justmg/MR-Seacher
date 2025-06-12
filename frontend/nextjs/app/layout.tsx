@@ -6,12 +6,12 @@ import "./globals.css";
 
 const inter = Lexend({ subsets: ["latin"] });
 
-let title = "GPT Researcher";
+let title = "FAR Part 10 Automated Market Research";
 let description =
-  "LLM based autonomous agent that conducts local and web research on any topic and generates a comprehensive report with citations.";
-let url = "https://github.com/assafelovic/gpt-researcher";
+  "Your AI partner for efficient, compliant, and comprehensive market analysis for government acquisitions.";
+let url = "https://github.com/justmg/MR-Seacher";
 let ogimage = "/favicon.ico";
-let sitename = "GPT Researcher";
+let sitename = "FAR Part 10 Automated Market Research";
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),

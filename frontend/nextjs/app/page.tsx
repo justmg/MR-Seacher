@@ -270,17 +270,21 @@ export default function Home() {
     setAllLogs(newLogs);
   }, [orderedData]);
 
+  /**
+   * Handles scroll events to show/hide the scroll-to-bottom button
+   */
   const handleScroll = useCallback(() => {
-    // Calculate if we're near bottom (within 100px)
     const scrollPosition = window.scrollY + window.innerHeight;
     const nearBottom = scrollPosition >= document.documentElement.scrollHeight - 100;
     
-    // Show button if we're not near bottom and page is scrollable
+    // Check if the page is scrollable
     const isPageScrollable = document.documentElement.scrollHeight > window.innerHeight;
     setShowScrollButton(isPageScrollable && !nearBottom);
   }, []);
 
-  // Add ResizeObserver to watch for content changes
+  /**
+   * Sets up and cleans up event listeners for scroll and resize events
+   */
   useEffect(() => {
     const mainContentElement = mainContentRef.current;
     const resizeObserver = new ResizeObserver(() => {
@@ -304,6 +308,9 @@ export default function Home() {
     };
   }, [handleScroll]);
 
+  /**
+   * Scrolls the window to the bottom of the page
+   */
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -312,28 +319,23 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <>
       <Header 
         loading={loading}
         isStopped={isStopped}
         showResult={showResult}
         onStop={handleStopResearch}
         onNewResearch={handleStartNewResearch}
+        onToggleSidebar={toggleSidebar}
       />
-      
       <ResearchSidebar
+        isOpen={sidebarOpen}
+        onClose={toggleSidebar}
         history={history}
         onSelectResearch={handleSelectResearch}
-        onNewResearch={handleStartNewResearch}
         onDeleteResearch={deleteResearch}
-        isOpen={sidebarOpen}
-        toggleSidebar={toggleSidebar}
       />
-      
-      <div 
-        ref={mainContentRef}
-        className="min-h-[100vh] pt-[120px]"
-      >
+      <main ref={mainContentRef} className="min-h-[100vh] pt-[120px]">
         {!showResult && (
           <Hero
             promptValue={promptValue}
@@ -343,47 +345,31 @@ export default function Home() {
         )}
 
         {showResult && (
-          <div className="flex h-full w-full grow flex-col justify-between">
-            <div className="container w-full space-y-2">
-              <div className="container space-y-2 task-components">
-                <ResearchResults
-                  orderedData={orderedData}
-                  answer={answer}
-                  allLogs={allLogs}
-                  chatBoxSettings={chatBoxSettings}
-                  handleClickSuggestion={handleClickSuggestion}
-                />
-              </div>
-
-              {showHumanFeedback && false &&(
-                <HumanFeedback
-                  questionForHuman={questionForHuman}
-                  websocket={socket}
-                  onFeedbackSubmit={handleFeedbackSubmit}
-                />
-              )}
-
-              <div className="pt-1 sm:pt-2" ref={chatContainerRef}></div>
-            </div>
-            <div id="input-area" className="container px-4 lg:px-0">
-              {loading ? (
-                <LoadingDots />
-              ) : (
-                <InputArea
-                  promptValue={promptValue}
-                  setPromptValue={setPromptValue}
-                  handleSubmit={handleChat}
-                  handleSecondary={handleDisplayResult}
-                  disabled={loading}
-                  reset={reset}
-                  isStopped={isStopped}
-                />
-              )}
-            </div>
+          <div ref={chatContainerRef} className="flex-grow overflow-y-auto">
+            <ResearchResults orderedData={orderedData} />
+            <div className="flex-grow" />
           </div>
         )}
+
+        {showHumanFeedback && (
+          <HumanFeedback
+            questionForHuman={questionForHuman}
+            websocket={socket}
+            onFeedbackSubmit={handleFeedbackSubmit}
+          />
+        )}
+      </main>
+
+      <div className="fixed bottom-0 left-0 w-full z-10" id="input-area">
+        <InputArea
+          promptValue={promptValue}
+          setPromptValue={setPromptValue}
+          handleSubmit={handleDisplayResult}
+          disabled={loading}
+        />
       </div>
-      {showScrollButton && showResult && (
+
+      {showScrollButton && (
         <button
           onClick={scrollToBottom}
           className="fixed bottom-8 right-8 flex items-center justify-center w-12 h-12 text-white bg-gradient-to-br from-teal-500 to-teal-600 rounded-full hover:from-teal-600 hover:to-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg z-50 backdrop-blur-sm border border-teal-400/20"
@@ -404,7 +390,7 @@ export default function Home() {
           </svg>
         </button>
       )}
-      <Footer setChatBoxSettings={setChatBoxSettings} chatBoxSettings={chatBoxSettings} />
-    </main>
+      <Footer />
+    </>
   );
 }
