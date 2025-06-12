@@ -15,76 +15,9 @@ const Hero: FC<THeroProps> = ({
   handleDisplayResult,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [showGradient, setShowGradient] = useState(true);
-  const particlesContainerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     setIsVisible(true);
-    
-    // Create particles for the background effect
-    if (particlesContainerRef.current) {
-      const container = particlesContainerRef.current;
-      const particleCount = window.innerWidth < 768 ? 15 : 30; // Reduce particles on mobile
-      
-      // Clear any existing particles
-      container.innerHTML = '';
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        
-        // Random particle attributes
-        const size = Math.random() * 4 + 1;
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const duration = Math.random() * 50 + 20;
-        const delay = Math.random() * 5;
-        const opacity = Math.random() * 0.3 + 0.1;
-        
-        // Apply styles
-        particle.className = 'absolute rounded-full bg-white';
-        Object.assign(particle.style, {
-          width: `${size}px`,
-          height: `${size}px`,
-          left: `${posX}%`,
-          top: `${posY}%`,
-          opacity: opacity.toString(),
-          animation: `float ${duration}s ease-in-out ${delay}s infinite`,
-        });
-        
-        container.appendChild(particle);
-      }
-    }
-    
-    // Add scroll event listener to show/hide gradient
-    let lastScrollY = window.scrollY;
-    const threshold = 100; // Amount of scroll before hiding gradient
-    
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY <= threshold) {
-        // At or near the top, show gradient
-        setShowGradient(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Scrolling down, hide gradient
-        setShowGradient(false);
-      } else if (currentScrollY < lastScrollY) {
-        // Scrolling up, show gradient
-        setShowGradient(true);
-      }
-      
-      lastScrollY = currentScrollY;
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    
-    // Clean up function
-    return () => {
-      if (particlesContainerRef.current) {
-        particlesContainerRef.current.innerHTML = '';
-      }
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   const handleClickSuggestion = (value: string) => {
@@ -99,8 +32,6 @@ const Hero: FC<THeroProps> = ({
 
   return (
     <div className="relative overflow-visible min-h-[80vh] sm:min-h-[85vh] flex items-center pt-[60px] sm:pt-[80px] mt-[-60px] sm:mt-[-130px]">
-      {/* Particle background */}
-      <div ref={particlesContainerRef} className="absolute inset-0 -z-20"></div>
       
       <motion.div 
         initial="hidden"
@@ -120,10 +51,10 @@ const Hero: FC<THeroProps> = ({
             variants={fadeInUp}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="mb-2 xs:mb-3 sm:mb-1 md:mb-0">Say Goodbye to</div>
+            <div className="mb-2 xs:mb-3 sm:mb-1 md:mb-0">FAR Part 10</div>
             <span
               style={{
-                backgroundImage: 'linear-gradient(to right, #0cdbb6, #1fd0f0, #06dbee)',
+                backgroundImage: 'linear-gradient(to right, #a855f7, #e879f9, #f472b6)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'block',
@@ -131,7 +62,7 @@ const Hero: FC<THeroProps> = ({
                 paddingBottom: '0.1em'
               }}
             >
-              Hours of Research
+              Automated Market Research
             </span>
           </motion.h1>
           <motion.h2 
@@ -139,26 +70,8 @@ const Hero: FC<THeroProps> = ({
             variants={fadeInUp}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Say Hello to GPT Researcher, your AI partner for instant insights and comprehensive research
+            Your AI partner for efficient, compliant, and comprehensive market analysis for government acquisitions.
           </motion.h2>
-          
-          {/* Powered by badge */}
-          {/*<motion.div
-            variants={fadeInUp}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex items-center justify-center gap-2 py-2 px-4 rounded-full bg-black/30 backdrop-blur-sm border border-teal-500/20 hover:border-teal-500/40 transition-all duration-300 shadow-sm hover:shadow-teal-900/20"
-          >
-            <div className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse mr-0.5"></div>
-            <span className="text-gray-400 text-sm font-medium">Powered by</span>
-            <a 
-              href="https://gptr.dev" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-white text-[15px] font-bold hover:underline"
-            >
-              GPT Researcher
-            </a>
-          </motion.div>*/}
         </motion.div>
 
         {/* Input section with enhanced styling */}
@@ -216,77 +129,11 @@ const Hero: FC<THeroProps> = ({
           </AnimatePresence>
         </motion.div>
       </motion.div>
-
-      {/* Magical premium gradient glow at the bottom */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showGradient ? 1 : 0 }}
-        transition={{ duration: 1.2 }}
-        className="fixed bottom-0 left-0 right-0 h-[12px] z-50 overflow-hidden pointer-events-none"
-      >
-        <div className="relative w-full h-full">
-          {/* Main perfect center glow with smooth fade at edges */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              opacity: 0.85,
-              background: 'radial-gradient(ellipse at center, rgba(12, 219, 182, 1) 0%, rgba(6, 219, 238, 0.7) 25%, rgba(6, 219, 238, 0.2) 50%, rgba(0, 0, 0, 0) 75%)',
-              boxShadow: '0 0 30px 6px rgba(12, 219, 182, 0.5), 0 0 60px 10px rgba(6, 219, 238, 0.25)'
-            }}
-          />
-          
-          {/* Subtle shimmer overlay with perfect center focus */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              animation: 'shimmer 8s ease-in-out infinite alternate',
-              opacity: 0.5,
-              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 30%, rgba(255, 255, 255, 0) 60%)'
-            }}
-          />
-          
-          {/* Gentle breathing effect */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              opacity: 0.4,
-              animation: 'breathe 7s cubic-bezier(0.4, 0.0, 0.2, 1) infinite',
-              background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 50%)'
-            }}
-          />
-        </div>
-      </motion.div>
-      
-      {/* Custom keyframes for magical animations */}
-      <style jsx global>{`
-        @keyframes shimmer {
-          0% {
-            opacity: 0.4;
-            transform: scale(0.98);
-          }
-          50% {
-            opacity: 0.6;
-          }
-          100% {
-            opacity: 0.4;
-            transform: scale(1.02);
-          }
-        }
-        
-        @keyframes breathe {
-          0%, 100% {
-            opacity: 0.3;
-            transform: scale(0.96);
-          }
-          50% {
-            opacity: 0.5;
-            transform: scale(1.04);
-          }
-        }
-      `}</style>
     </div>
   );
 };
+
+export default Hero;
 
 type suggestionType = {
   id: number;
@@ -297,19 +144,22 @@ type suggestionType = {
 const suggestions: suggestionType[] = [
   {
     id: 1,
-    name: "Stock analysis on ",
-    icon: "/img/stock2.svg",
+    name: "Small Business Search",
+    icon: "/icons/cube.svg",
   },
   {
     id: 2,
-    name: "Help me plan an adventure to ",
-    icon: "/img/hiker.svg",
+    name: "Vendor Analysis",
+    icon: "/icons/book.svg",
   },
   {
     id: 3,
-    name: "What are the latest news on ",
-    icon: "/img/news.svg",
+    name: "NAICS Code Lookup",
+    icon: "/icons/search.svg",
+  },
+  {
+    id: 4,
+    name: "Historical Contract Data",
+    icon: "/icons/chart.svg",
   },
 ];
-
-export default Hero;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { FC, useRef } from "react";
+import React, { FC, useRef, ChangeEvent, KeyboardEvent } from "react";
 import TypeAnimation from "../../TypeAnimation";
 
 type TInputAreaProps = {
@@ -50,13 +50,13 @@ const InputArea: FC<TInputAreaProps> = ({
     target.style.height = `${target.scrollHeight}px`;
   }, 100);
 
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target;
     adjustHeight(target);
     setPromptValue(target.value);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (e.shiftKey) {
         return;
@@ -105,23 +105,15 @@ const InputArea: FC<TInputAreaProps> = ({
       <button
         disabled={disabled}
         type="submit"
-        className="relative flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[3px] bg-teal-500 hover:bg-gradient-to-br hover:from-[#0cdbb6] hover:via-[#1fd0f0] hover:to-[#06dbee] transition-all duration-300 disabled:opacity-75 disabled:hover:bg-teal-500/75"
+        className="relative flex h-[50px] w-auto shrink-0 items-center justify-center rounded-lg bg-teal-500 px-4 text-white font-semibold hover:bg-gradient-to-br hover:from-[#a855f7] hover:via-[#e879f9] hover:to-[#f472b6] transition-all duration-300 disabled:opacity-75 disabled:hover:bg-teal-500/75"
       >
-        {disabled && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <TypeAnimation />
-          </div>
+        {disabled ? (
+          <TypeAnimation />
+        ) : (
+          <span className="transition-all duration-300 hover:scale-105">
+            Start
+          </span>
         )}
-
-        <div className="relative p-2 cursor-pointer">
-          <img
-            src={"/img/arrow-narrow-right.svg"}
-            alt="search"
-            width={24}
-            height={24}
-            className={`${disabled ? "invisible" : ""} transition-all duration-300 hover:scale-110 hover:brightness-110 hover:filter hover:drop-shadow-[0_0_3px_rgba(255,255,255,0.7)]`}
-          />
-        </div>
       </button>
     </form>
   );
