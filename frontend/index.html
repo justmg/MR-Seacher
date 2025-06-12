@@ -306,10 +306,6 @@
           <label for="report_source" class="agent-question"
             >What sources would you like me to research from?</label
           >
-          <p class="text-left mt-0 pt-0" style="font-size: 0.7rem">
-            You can now do research on local documents as well. Please make sure
-            to add the DOC_PATH env variable pointing to your documents folder.
-          </p>
           <select
             name="report_source"
             id="report_source"
@@ -317,9 +313,6 @@
             required
           >
             <option value="web">The Web</option>
-            <option value="local">My Documents</option>
-            <option value="hybrid">Hybrid</option>
-            <option value="azure">Azure storage</option>
           </select>
         </div>
         <div class="form-group">
@@ -338,7 +331,7 @@
         </div>
 
         <!-- MCP Configuration Section -->
-        <div class="form-group">
+        <div class="form-group" style="display: none">
           <div class="mcp-section">
             <div class="mcp-header">
               <label for="mcpEnabled" class="form-label">
